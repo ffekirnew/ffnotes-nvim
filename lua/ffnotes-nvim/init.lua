@@ -1,19 +1,19 @@
-local definitions = require("lua.ffnotes-nvim.definitions")
-local utils = require("lua.ffnotes-nvim.utils")
+local definitions = require("ffnotes-nvim.definitions")
+local notes = {}
 
-print(definitions)
+-- notes_dir is a required option
+--- @param opts table
+--- @return nil
+--- @usage require("ffnotes-nvim").setup({ notes_dir = "~/notes" })
+notes.setup = function(opts)
+	if opts == nil then
+		opts = {}
+		return
+	end
 
-local keymap = vim.keymap -- for conciseness
+	definitions.notes_dir = opts.notes_dir
+end
 
-keymap.set("n", "<leader>n", function()
-	local daily_note_path = utils.getDailyNotePath()
+notes.functions = require("ffnotes-nvim.functions")
 
-	vim.cmd(":tabnew Daily note" .. daily_note_path)
-	vim.cmd(":edit " .. daily_note_path)
-	vim.fn.execute("nb import " .. daily_note_path, "silent!")
-end, { desc = "Create a new daily note in a new tab" })
-
-keymap.set("n", "<leader>ns", function()
-	vim.cmd(":tabnew Find notes")
-	vim.cmd(':Telescope find_files search_dirs={"' .. definitions.notes_dir .. '"}<cr>')
-end, { desc = "Find and open notes in a new tab" })
+return notes
