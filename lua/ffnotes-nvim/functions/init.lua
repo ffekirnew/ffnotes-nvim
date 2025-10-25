@@ -16,7 +16,7 @@ functions.newNote = function()
 
 	new_note_name = utils.normalize(new_note_name)
 
-	local new_note_path = workdir_path .. "/" .. definitions.sub_directories.inbox .. "/" .. new_note_name .. ".md"
+	local new_note_path = workdir_path .. "/" .. definitions.sub_directories.inbox .. "/" .. new_note_name
 
 	vim.cmd("tabnew" .. new_note_path)
 end

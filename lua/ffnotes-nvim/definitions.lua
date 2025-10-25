@@ -12,15 +12,10 @@ definitions.sub_directories = {
 	templates = "/templates",
 }
 
---- @param path string
-local function mkdir_p(path)
-	os.execute("mkdir -p " .. path)
-end
-
 --- @return nil
 definitions.createSubDirectories = function()
 	for _, sub_dir in pairs(definitions.sub_directories) do
-		mkdir_p(definitions.notes_dir .. sub_dir)
+		os.execute(definitions.notes_dir .. sub_dir)
 	end
 end
 
