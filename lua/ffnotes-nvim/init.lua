@@ -12,6 +12,8 @@ notes.setup = function(opts)
 	end
 
 	definitions.notes_dir = opts.notes_dir
+
+	definitions.createSubDirectories()
 end
 
 notes.functions = require("ffnotes-nvim.functions")
