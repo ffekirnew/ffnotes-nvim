@@ -1,4 +1,3 @@
-local lfs = require("lfs")
 local definitions = {}
 
 --- @type string
@@ -15,16 +14,7 @@ definitions.sub_directories = {
 
 --- @param path string
 local function mkdir_p(path)
-	local full_path = ""
-	for dir in string.gmatch(path, "[^/]+") do
-		full_path = full_path .. "/" .. dir
-		local attr = lfs.attributes(full_path)
-		if not attr then
-			lfs.mkdir(full_path)
-		elseif attr.mode ~= "directory" then
-			error(full_path .. " exists but is not a directory")
-		end
-	end
+	os.execute("mkdir -p " .. path)
 end
 
 --- @return nil
