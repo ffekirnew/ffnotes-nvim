@@ -27,4 +27,16 @@ utils.normalize = function(name)
 	return name
 end
 
+--- @param path string
+--- @return nil
+utils.getParentDirectory = function(path)
+	return path:match("(.*/)")
+end
+
+--- @param path string
+--- @return string
+utils.getFileName = function(path)
+	return path:match("([^/]*)$")
+end
+
 return utils

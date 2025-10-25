@@ -7,7 +7,7 @@ local functions = {}
 
 --- @return nil
 functions.newNoteFromTemplate = function()
-	local new_note_name = vim.fn.input("Enter note name: ")
+	local new_note_name = vim.fn.input("Enter note name to be created from template: ")
 
 	if new_note_name == nil then
 		print("Note creation aborted.")
@@ -17,14 +17,14 @@ functions.newNoteFromTemplate = function()
 	new_note_name = utils.normalize(new_note_name)
 	local new_note_path = workdir_path .. "/" .. definitions.sub_directories.inbox .. "/" .. new_note_name
 
-	vim.cmd("tabnew" .. new_note_path)
-
-	-- On a new tab, open a telescope find_files window to select a template
-	vim.cmd("Telescope find_files search_dirs={" .. workdir_path .. "/" .. definitions.sub_directories.templates .. "}")
+	-- Open a telescope find_files window to select a template
+	local templates_dir = workdir_path .. "/" .. definitions.sub_directories.templates
+	vim.cmd("tabnew")
+	vim.cmd("Telescope find_files search_dirs={" .. templates_dir .. "}")
 
 	-- after selecting a template, read the contents of the file and insert it into the new note
 	vim.cmd("normal! ggVGy")
-	vim.cmd("tabnext")
+	vim.cmd("tabnew" .. new_note_path)
 	vim.cmd("normal! ggP")
 end
 
