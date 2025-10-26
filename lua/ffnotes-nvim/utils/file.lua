@@ -58,4 +58,25 @@ function file_utils.create_parent_directories(path)
 	return ensure_dir(dir)
 end
 
+--- @param from string
+--- @param to string
+--- @return nil
+function file_utils.copy_file(from, to)
+	local input = assert(io.open(from, "rb"))
+	local output = assert(io.open(to, "wb"))
+
+	-- copy in chunks to handle large files efficiently
+	local block_size = 2 ^ 13 -- 8 KiB
+	while true do
+		local chunk = input:read(block_size)
+		if not chunk then
+			break
+		end
+		output:write(chunk)
+	end
+
+	input:close()
+	output:close()
+end
+
 return file_utils

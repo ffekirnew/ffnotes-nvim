@@ -39,4 +39,16 @@ utils.getFileName = function(path)
 	return path:match("([^/]*)$")
 end
 
+--- @return string | nil
+utils.newNoteInit = function()
+	local new_note_name = vim.fn.input("Enter note name: ")
+
+	if new_note_name == nil then
+		print("Note creation aborted.")
+		return
+	end
+
+	return utils.normalize(new_note_name)
+end
+
 return utils
