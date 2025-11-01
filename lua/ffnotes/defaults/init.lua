@@ -1,4 +1,4 @@
---- @module "ffnotes-nvim.defaults"
+--- @module "ffnotes.defaults"
 local defaults = {}
 
 --- @type string

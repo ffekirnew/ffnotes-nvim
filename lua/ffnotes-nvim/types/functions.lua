@@ -1,4 +1,0 @@
----@class Functions
----@field newNote fun(options: table<string, string>): function
----@field dailyNote fun(options: table<string, string>): function
----@field searchNotes fun(options: table<string, string>): function

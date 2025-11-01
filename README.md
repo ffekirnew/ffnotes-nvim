@@ -1,2 +1,2 @@
-# ffnotes-nvim
+# ffnotes
 notes manager for nvim

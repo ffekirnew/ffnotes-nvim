@@ -1,10 +1,20 @@
+--- @module "ffnotes.commands.utils"
 local utils = {}
 
 --- @return string
 utils.getDate = function()
 	local now = os.date("*t")
 
-	return now.year .. now.month .. now.day
+	--- @return string
+	local addLeadingZero = function()
+		if string.len(now.day) == 1 then
+			return "0"
+		else
+			return ""
+		end
+	end
+
+	return now.year .. now.month .. addLeadingZero() .. now.day
 end
 
 --- @return string
@@ -18,13 +28,14 @@ end
 --- @return string
 utils.normalize = function(name)
 	name = name:gsub("$s+", "_")
-	name = name:gsub("[^%w.%-]", "")
+	name = name:gsub("[^%w.%-]", "_")
 
 	if not name:match("$.md$") then
 		name = name .. ".md"
 	end
 
-	return name
+	local date = utils.getDate()
+	return date .. "-" .. name
 end
 
 --- @param path string
@@ -37,18 +48,6 @@ end
 --- @return string
 utils.getFileName = function(path)
 	return path:match("([^/]*)$")
-end
-
---- @return string | nil
-utils.newNoteInit = function()
-	local new_note_name = vim.fn.input("Enter note name: ")
-
-	if new_note_name == nil then
-		print("Note creation aborted.")
-		return
-	end
-
-	return utils.normalize(new_note_name)
 end
 
 return utils

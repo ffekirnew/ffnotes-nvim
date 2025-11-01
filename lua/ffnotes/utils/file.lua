@@ -1,18 +1,18 @@
-local file_utils = {}
+local fileUtils = {}
 
 local uv = vim.uv
 
 --- @param path string
 --- @return boolean
-function file_utils.file_exists(path)
+function fileUtils.file_exists(path)
 	local stat = uv.fs_stat(path)
 	return stat ~= nil
 end
 
 --- @param path string
---- @param callback function
+--- @param callback fun(success: boolean, err: string)
 --- @return nil
-function file_utils.create_file(path, callback)
+function fileUtils.create_file(path, callback)
 	uv.fs_open(path, "w", 438, function(err, fd)
 		if err then
 			callback(false, err)
@@ -30,7 +30,7 @@ end
 
 --- @param path string
 --- @return nil
-function file_utils.create_parent_directories(path)
+function fileUtils.create_parent_directories(path)
 	local dir = vim.fs.dirname(path)
 	if not dir or dir == "" then
 		return false, "Invalid path"
@@ -61,7 +61,7 @@ end
 --- @param from string
 --- @param to string
 --- @return nil
-function file_utils.copy_file(from, to)
+function fileUtils.copy_file(from, to)
 	local input = assert(io.open(from, "rb"))
 	local output = assert(io.open(to, "wb"))
 
@@ -79,4 +79,4 @@ function file_utils.copy_file(from, to)
 	output:close()
 end
 
-return file_utils
+return fileUtils

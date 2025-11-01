@@ -1,7 +1,7 @@
---- @module "ffnotes-nvim.config"
+--- @module "ffnotes.config"
 local config = {}
 
-local definitions = require("ffnotes-nvim.defaults")
+local definitions = require("ffnotes.defaults")
 
 --- @param opts Config
 --- @return Config

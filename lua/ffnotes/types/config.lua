@@ -1,4 +1,4 @@
---- @module "ffnotes-nvim.types.config"
+--- @module "ffnotes.types.config"
 
 ---@class SubDirs
 ---@field daily_notes string
