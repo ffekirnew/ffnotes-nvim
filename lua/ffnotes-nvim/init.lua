@@ -1,10 +1,14 @@
-local notes = {}
+local ffnotes = {}
 
--- notes_dir is a required option
---- @param _ table
+local config = require("ffnotes-nvim.config")
+local functions = require("ffnotes-nvim.functions")
+
+--- @param opts Config
 --- @return nil
-notes.setup = function(_) end
+ffnotes.setup = function(opts)
+	local options = config.initialize(opts)
 
-notes.functions = require("ffnotes-nvim.functions")
+	ffnotes.functions = functions.initialize(options)
+end
 
-return notes
+return ffnotes
