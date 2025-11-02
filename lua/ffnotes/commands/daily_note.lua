@@ -1,7 +1,7 @@
 --- @module "ffnotes.commands.daily_note"
 
 local utils = require("ffnotes.commands.utils")
-local fileUtils = require("ffnotes.utils.file")
+local ioUtils = require("ffnotes.utils.io")
 
 --- @param options Config
 --- @return fun(): nil
@@ -10,7 +10,7 @@ local dailyNote = function(options)
 		local title = utils.getDailyNoteFile()
 		local path = options.sub_dirs.daily_notes .. "/" .. title
 
-		if not fileUtils.file_exists(path) then
+		if not ioUtils.file_exists(path) then
 			-- apply init logic
 			utils.initNote({
 				note = {

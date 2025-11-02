@@ -1,7 +1,27 @@
 --- @module "ffnotes.commands.utils"
-local fileUtils = require("ffnotes.utils.file")
+local ioUtils = require("ffnotes.utils.io")
 
 local utils = {}
+
+--- @param templatePath string
+--- @return string
+utils.getTemplates = function(templatePath)
+	return ioUtils.list_files(templatePath)
+end
+
+--- @param t string[]
+--- @param separator string
+--- @return string
+utils.joinString = function(t, separator)
+	local s = ""
+	for i, v in ipairs(t) do
+		if i ~= 1 then
+			s = s .. separator
+		end
+		s = s .. v
+	end
+	return s
+end
 
 --- @param format string | nil
 --- @return string
@@ -30,12 +50,12 @@ end
 --- @return nil
 utils.initNote = function(config)
 	if config.note.templatePath then
-		fileUtils.copy_file(config.note.templatePath, config.note.path)
+		ioUtils.copy_file(config.note.templatePath, config.note.path)
 	end
 
 	local from = { "title", "date" }
 	local to = { config.note.title, utils.getDate("%Y-%m-%d") }
-	fileUtils.find_and_replace(config.note.path, from, to)
+	ioUtils.find_and_replace(config.note.path, from, to)
 end
 
 --- @return string

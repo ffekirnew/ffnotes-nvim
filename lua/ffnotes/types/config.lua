@@ -10,7 +10,6 @@
 ---@class Templates
 ---@field default string
 ---@field daily_note string
----@field journal string
 ---@field template string
 
 ---@class Config

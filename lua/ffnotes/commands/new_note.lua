@@ -2,7 +2,7 @@
 
 local constants = require("ffnotes.commands.constants")
 local utils = require("ffnotes.commands.utils")
-local fileUtils = require("ffnotes.utils.file")
+local ioUtils = require("ffnotes.utils.io")
 
 --- @param options Config
 --- @return fun(): nil
@@ -16,7 +16,7 @@ local newNote = function(options)
 		end
 
 		local path = options.sub_dirs.inbox .. "/" .. utils.normalize(title, true)
-		if not fileUtils.file_exists(path) then
+		if not ioUtils.file_exists(path) then
 			-- apply init logic
 			utils.initNote({
 				note = {

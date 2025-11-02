@@ -1,19 +1,29 @@
---- @module "ffnotes.utils.file"
-local fileUtils = {}
+--- @module "ffnotes.utils.io"
+local ioUtils = {}
 
 local uv = vim.uv
 
 --- @param path string
 --- @return boolean
-function fileUtils.file_exists(path)
+function ioUtils.file_exists(path)
 	local stat = uv.fs_stat(path)
 	return stat ~= nil
 end
 
 --- @param path string
+--- @return string[]
+function ioUtils.list_files(path)
+	local files = {}
+	for file in vim.fs.dir(path) do
+		table.insert(files, file)
+	end
+	return files
+end
+
+--- @param path string
 --- @param callback fun(success: boolean, err: string)
 --- @return nil
-function fileUtils.create_file(path, callback)
+function ioUtils.create_file(path, callback)
 	uv.fs_open(path, "w", 438, function(err, fd)
 		if err then
 			callback(false, err)
@@ -30,8 +40,8 @@ function fileUtils.create_file(path, callback)
 end
 
 --- @param path string
---- @return nil
-function fileUtils.create_parent_directories(path)
+--- @return boolean, string | nil
+function ioUtils.create_parent_directories(path)
 	local dir = vim.fs.dirname(path)
 	if not dir or dir == "" then
 		return false, "Invalid path"
@@ -62,7 +72,7 @@ end
 --- @param from string
 --- @param to string
 --- @return nil
-function fileUtils.copy_file(from, to)
+function ioUtils.copy_file(from, to)
 	local input = assert(io.open(from, "rb"))
 	local output = assert(io.open(to, "wb"))
 
@@ -84,7 +94,7 @@ end
 --- @param from table<string>
 --- @param to table<string>
 --- @return nil
-function fileUtils.find_and_replace(path, from, to)
+function ioUtils.find_and_replace(path, from, to)
 	local file = io.open(path, "r")
 	if not file then
 		return
@@ -105,4 +115,4 @@ function fileUtils.find_and_replace(path, from, to)
 	file:close()
 end
 
-return fileUtils
+return ioUtils

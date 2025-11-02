@@ -3,8 +3,9 @@
 --- @class Constants
 --- @field newNotePrompt string
 local constants = {
-	newNotePrompt = "Enter note name: ",
-	newTemplatePrompt = "Enter template name: ",
+	newNotePrompt = "What should we call the note?",
+	newTemplatePrompt = "What should we call the template?",
+	chooseTemplatePrompt = "Choose from your template:",
 	telescopeSearchDirs = function(directory)
 		return 'Telescope find_files search_dirs={"' .. directory .. '"}'
 	end,

@@ -32,8 +32,10 @@ ffnotes.setup = function(opts)
 	ffnotes.registerCommand(
 		"FfnotesNewNoteFromTemplate",
 		newNoteFromTemplate,
-		{ nargs = 1, desc = "Create a new note from a template" }
+		{ nargs = 0, desc = "Create a new note from a template" }
 	)
+	local newTemplate = require(commands.FfnotesNewTemplate)(global_config)
+	ffnotes.registerCommand("FfnotesNewTemplate", newTemplate, { nargs = 0, desc = "Create a new template" })
 end
 
 return ffnotes
