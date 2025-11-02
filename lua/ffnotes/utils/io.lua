@@ -1,0 +1,118 @@
+--- @module "ffnotes.utils.io"
+local ioUtils = {}
+
+local uv = vim.uv
+
+--- @param path string
+--- @return boolean
+function ioUtils.file_exists(path)
+	local stat = uv.fs_stat(path)
+	return stat ~= nil
+end
+
+--- @param path string
+--- @return string[]
+function ioUtils.list_files(path)
+	local files = {}
+	for file in vim.fs.dir(path) do
+		table.insert(files, file)
+	end
+	return files
+end
+
+--- @param path string
+--- @param callback fun(success: boolean, err: string)
+--- @return nil
+function ioUtils.create_file(path, callback)
+	uv.fs_open(path, "w", 438, function(err, fd)
+		if err then
+			callback(false, err)
+			return
+		end
+		uv.fs_close(fd, function(close_err)
+			if close_err then
+				callback(false, close_err)
+				return
+			end
+			callback(true)
+		end)
+	end)
+end
+
+--- @param path string
+--- @return boolean, string | nil
+function ioUtils.create_parent_directories(path)
+	local dir = vim.fs.dirname(path)
+	if not dir or dir == "" then
+		return false, "Invalid path"
+	end
+
+	-- Recursively ensure parent directory exists
+	local function ensure_dir(target)
+		local stat = uv.fs_stat(target)
+		if stat then
+			return true
+		end
+
+		local parent = vim.fs.dirname(target)
+		if parent and parent ~= target then
+			ensure_dir(parent)
+		end
+
+		local ok, mkdir_err = uv.fs_mkdir(target, 493) -- 0755
+		if not ok and mkdir_err ~= "EEXIST" then
+			return false, mkdir_err
+		end
+		return true
+	end
+
+	return ensure_dir(dir)
+end
+
+--- @param from string
+--- @param to string
+--- @return nil
+function ioUtils.copy_file(from, to)
+	local input = assert(io.open(from, "rb"))
+	local output = assert(io.open(to, "wb"))
+
+	-- copy in chunks to handle large files efficiently
+	local block_size = 2 ^ 13 -- 8 KiB
+	while true do
+		local chunk = input:read(block_size)
+		if not chunk then
+			break
+		end
+		output:write(chunk)
+	end
+
+	input:close()
+	output:close()
+end
+
+--- @param path string
+--- @param from table<string>
+--- @param to table<string>
+--- @return nil
+function ioUtils.find_and_replace(path, from, to)
+	local file = io.open(path, "r")
+	if not file then
+		return
+	end
+	local content = file:read("*all")
+	file:close()
+
+	for k, v in pairs(from) do
+		local from_string = "{{" .. v .. "}}"
+		content = content:gsub(from_string, to[k])
+	end
+
+	file = io.open(path, "w")
+	if not file then
+		return
+	end
+	file:write(content)
+	file:close()
+end
+
+return ioUtils

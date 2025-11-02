@@ -1,0 +1,14 @@
+--- @module "ffnotes.commands.constants"
+
+--- @class Constants
+--- @field newNotePrompt string
+local constants = {
+	newNotePrompt = "What should we call the note?",
+	newTemplatePrompt = "What should we call the template?",
+	chooseTemplatePrompt = "Choose from your template:",
+	telescopeSearchDirs = function(directory)
+		return 'Telescope find_files search_dirs={"' .. directory .. '"}'
+	end,
+}
+
+return constants
