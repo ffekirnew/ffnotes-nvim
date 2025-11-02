@@ -1,3 +1,4 @@
+--- @module "ffnotes.utils.file"
 local fileUtils = {}
 
 local uv = vim.uv
@@ -77,6 +78,31 @@ function fileUtils.copy_file(from, to)
 
 	input:close()
 	output:close()
+end
+
+--- @param path string
+--- @param from table<string>
+--- @param to table<string>
+--- @return nil
+function fileUtils.find_and_replace(path, from, to)
+	local file = io.open(path, "r")
+	if not file then
+		return
+	end
+	local content = file:read("*all")
+	file:close()
+
+	for k, v in pairs(from) do
+		local from_string = "{{" .. v .. "}}"
+		content = content:gsub(from_string, to[k])
+	end
+
+	file = io.open(path, "w")
+	if not file then
+		return
+	end
+	file:write(content)
+	file:close()
 end
 
 return fileUtils

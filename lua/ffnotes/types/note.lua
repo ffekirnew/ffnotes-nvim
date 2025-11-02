@@ -1,0 +1,5 @@
+--- @class Note
+--- @field title string
+--- @field path string
+--- @field date string
+--- @field templatePath string

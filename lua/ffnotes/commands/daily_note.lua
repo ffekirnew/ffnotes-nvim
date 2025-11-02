@@ -7,14 +7,22 @@ local fileUtils = require("ffnotes.utils.file")
 --- @return fun(): nil
 local dailyNote = function(options)
 	return function()
-		local dailyNote = utils.getDailyNoteFile()
-		local dailyNotePath = options.sub_dirs.daily_notes .. "/" .. dailyNote
+		local title = utils.getDailyNoteFile()
+		local path = options.sub_dirs.daily_notes .. "/" .. title
 
-		if not fileUtils.file_exists(dailyNotePath) then
-			fileUtils.copy_file(options.default_templates.daily_note, dailyNotePath)
+		if not fileUtils.file_exists(path) then
+			-- apply init logic
+			utils.initNote({
+				note = {
+					title = title,
+					path = path,
+					date = utils.getDate("%Y-%m-%d"),
+					templatePath = options.default_templates.daily_note,
+				},
+			})
 		end
 
-		vim.cmd("tabnew" .. dailyNotePath)
+		vim.cmd("tabnew" .. path)
 	end
 end
 

@@ -1,9 +1,15 @@
 --- @module "ffnotes.commands.utils"
+local fileUtils = require("ffnotes.utils.file")
+
 local utils = {}
 
+--- @param format string | nil
 --- @return string
-utils.getDate = function()
-	local now = os.date("*t")
+utils.getDate = function(format)
+	local now = os.date(format or "*t")
+	if format ~= nil then
+		return tostring(now)
+	end
 
 	--- @return string
 	local addLeadingZero = function()
@@ -15,6 +21,21 @@ utils.getDate = function()
 	end
 
 	return now.year .. now.month .. addLeadingZero() .. now.day
+end
+
+--- @class InitNoteConfig
+--- @field note Note
+---
+--- @param config InitNoteConfig
+--- @return nil
+utils.initNote = function(config)
+	if config.note.templatePath then
+		fileUtils.copy_file(config.note.templatePath, config.note.path)
+	end
+
+	local from = { "title", "date" }
+	local to = { config.note.title, utils.getDate("%Y-%m-%d") }
+	fileUtils.find_and_replace(config.note.path, from, to)
 end
 
 --- @return string
@@ -35,7 +56,7 @@ utils.normalize = function(name)
 	end
 
 	local date = utils.getDate()
-	return date .. "-" .. name
+	return date .. "-" .. string.lower(name)
 end
 
 --- @param path string
