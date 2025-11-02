@@ -19,17 +19,10 @@ config.initialize = function(opts)
 			journal = notes_dir .. "/" .. definitions.sub_dirs.journal,
 			templates = notes_dir .. "/" .. definitions.sub_dirs.templates,
 		},
-		default_templates = {
-			default = notes_dir
-				.. "/"
-				.. definitions.sub_dirs.templates
-				.. "/"
-				.. definitions.default_templates.default,
-			daily_note = notes_dir
-				.. "/"
-				.. definitions.sub_dirs.templates
-				.. "/"
-				.. definitions.default_templates.daily_note,
+		templates = {
+			default = notes_dir .. "/" .. definitions.sub_dirs.templates .. "/" .. definitions.templates.default,
+			daily_note = notes_dir .. "/" .. definitions.sub_dirs.templates .. "/" .. definitions.templates.daily_note,
+			template = notes_dir .. "/" .. definitions.sub_dirs.templates .. "/" .. definitions.templates.template,
 		},
 	}
 end

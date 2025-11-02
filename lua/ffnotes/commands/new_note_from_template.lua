@@ -7,9 +7,9 @@ local fileUtils = require("ffnotes.utils.file")
 --- @param options Config
 --- @return fun(templatePath: string): nil
 local newNote = function(options)
-	--- @param templatePath string
-	return function(templatePath)
-		print(templatePath)
+	--- @param template string
+	return function(template)
+		local templatePath = options.sub_dirs.templates .. "/" .. template
 		if not fileUtils.file_exists(templatePath) then
 			error("Template file does not exist.")
 			return
@@ -22,7 +22,7 @@ local newNote = function(options)
 			return
 		end
 
-		local path = options.sub_dirs.inbox .. "/" .. utils.normalize(title)
+		local path = options.sub_dirs.inbox .. "/" .. utils.normalize(title, true)
 		if not fileUtils.file_exists(path) then
 			-- apply init logic
 			utils.initNote({
@@ -30,7 +30,7 @@ local newNote = function(options)
 					title = title,
 					path = path,
 					date = utils.getDate("%Y-%m-%d"),
-					templatePath = templatePath,
+					templatePath = template,
 				},
 			})
 		end

@@ -7,11 +7,13 @@
 ---@field journal string
 ---@field templates string
 
----@class DefaultTemplates
+---@class Templates
 ---@field default string
 ---@field daily_note string
+---@field journal string
+---@field template string
 
 ---@class Config
 ---@field notes_dir string
 ---@field sub_dirs SubDirs
----@field default_templates DefaultTemplates
+---@field templates Templates

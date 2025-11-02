@@ -1,4 +1,4 @@
---- @module "ffnotes.commands.new_note"
+--- @module "ffnotes.commands.new_template"
 
 local constants = require("ffnotes.commands.constants")
 local utils = require("ffnotes.commands.utils")
@@ -6,24 +6,24 @@ local fileUtils = require("ffnotes.utils.file")
 
 --- @param options Config
 --- @return fun(): nil
-local newNote = function(options)
+local newTemplate = function(options)
 	return function()
-		local title = vim.fn.input(constants.newNotePrompt)
+		local title = vim.fn.input(constants.newTemplatePrompt)
 
 		if title == nil then
-			error("Note creation aborted.")
+			error("Template creation aborted.")
 			return
 		end
 
-		local path = options.sub_dirs.inbox .. "/" .. utils.normalize(title, true)
+		local path = options.sub_dirs.templates .. "/" .. utils.normalize(title, false)
 		if not fileUtils.file_exists(path) then
 			-- apply init logic
-			utils.initNote({
+			utils.initTemplate({
 				note = {
 					title = title,
 					path = path,
 					date = utils.getDate("%Y-%m-%d"),
-					templatePath = options.templates.default,
+					templatePath = options.templates.template,
 				},
 			})
 		end
@@ -32,4 +32,4 @@ local newNote = function(options)
 	end
 end
 
-return newNote
+return newTemplate

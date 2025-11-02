@@ -14,9 +14,10 @@ defaults.sub_dirs = {
 }
 
 --- @type table<string, string>
-defaults.default_templates = {
+defaults.templates = {
 	default = "default.md",
 	daily_note = "daily_note.md",
+	template = "template.md",
 }
 
 --- @type Config

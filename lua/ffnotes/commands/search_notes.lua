@@ -1,11 +1,12 @@
 --- @module "ffnotes.commands.search_notes"
 
+local constants = require("ffnotes.commands.constants")
+
 --- @param options Config
 --- @return fun(): nil
 local searchNotes = function(options)
 	return function()
-		vim.cmd("tabnew")
-		vim.cmd('Telescope find_files search_dirs={"' .. options.notes_dir .. '"}')
+		vim.cmd("tabnew", constants.telescopeSearchDirs(options.notes_dir))
 	end
 end
 

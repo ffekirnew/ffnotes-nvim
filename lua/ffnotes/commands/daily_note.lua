@@ -17,7 +17,7 @@ local dailyNote = function(options)
 					title = title,
 					path = path,
 					date = utils.getDate("%Y-%m-%d"),
-					templatePath = options.default_templates.daily_note,
+					templatePath = options.templates.daily_note,
 				},
 			})
 		end

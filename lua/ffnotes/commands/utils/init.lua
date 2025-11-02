@@ -46,8 +46,11 @@ utils.getDailyNoteFile = function()
 end
 
 --- @param name string
+--- @param addDate boolean
 --- @return string
-utils.normalize = function(name)
+utils.normalize = function(name, addDate)
+	addDate = addDate or true
+
 	name = name:gsub("$s+", "_")
 	name = name:gsub("[^%w.%-]", "_")
 
@@ -55,8 +58,11 @@ utils.normalize = function(name)
 		name = name .. ".md"
 	end
 
-	local date = utils.getDate()
-	return date .. "-" .. string.lower(name)
+	if addDate then
+		return utils.getDate() .. "-" .. string.lower(name)
+	else
+		return string.lower(name)
+	end
 end
 
 --- @param path string
