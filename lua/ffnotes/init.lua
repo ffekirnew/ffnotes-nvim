@@ -4,18 +4,36 @@ local ffnotes = {}
 local config = require("ffnotes.config")
 local commands = require("ffnotes.commands")
 
+ffnotes.commands = {}
+
+--- @param name string
+--- @param func function
+--- @param commandConfig  vim.api.keyset.user_command
+ffnotes.registerCommand = function(name, func, commandConfig)
+	ffnotes.commands[name] = func
+	vim.api.nvim_create_user_command(name, func, commandConfig)
+end
+
 --- @param opts Config
 --- @return nil
 ffnotes.setup = function(opts)
-	local command_config = config.initialize(opts)
+	local global_config = config.initialize(opts)
 
-	ffnotes.commands = {}
-	for command, commandFunction in pairs(commands) do
-		local configuredCommand = commandFunction(command_config)
+	local newNote = require(commands.FfnotesNewNote)(global_config)
+	ffnotes.registerCommand("FfnotesNewNote", newNote, { nargs = 0, desc = "Create a new note" })
 
-		ffnotes.commands[command] = configuredCommand
-		vim.api.nvim_create_user_command(command, configuredCommand, {})
-	end
+	local dailyNote = require(commands.FfnotesDailyNote)(global_config)
+	ffnotes.registerCommand("FfnotesDailyNote", dailyNote, { nargs = 0, desc = "Create a new daily note" })
+
+	local searchNotes = require(commands.FfnotesSearchNotes)(global_config)
+	ffnotes.registerCommand("FfnotesSearchNotes", searchNotes, { nargs = 0, desc = "Search notes" })
+
+	local newNoteFromTemplate = require(commands.FfnotesNewNoteFromTemplate)(global_config)
+	ffnotes.registerCommand(
+		"FfnotesNewNoteFromTemplate",
+		newNoteFromTemplate,
+		{ nargs = 1, desc = "Create a new note from a template" }
+	)
 end
 
 return ffnotes

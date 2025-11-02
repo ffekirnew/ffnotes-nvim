@@ -2,3 +2,4 @@
 ---@field FfnotesNewNote fun(options: table<string, string>): function
 ---@field FfnotesDailyNote fun(options: table<string, string>): function
 ---@field FfnotesSearchNotes fun(options: table<string, string>): function
+---@field FfnotesNewNoteFromTemplate fun(options: table<string, string>): function
