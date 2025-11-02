@@ -4,27 +4,38 @@ local constants = require("ffnotes.commands.constants")
 local utils = require("ffnotes.commands.utils")
 local ioUtils = require("ffnotes.utils.io")
 
+--- @param templates string[]
+--- @return string
+local function formatTemplates(templates)
+	local s = ""
+	for i, templateName in ipairs(templates) do
+		if i ~= 1 then
+			s = s .. "\n"
+		end
+		s = s .. "[" .. i .. "] " .. templateName
+	end
+	return s
+end
+
 --- @param options Config
 --- @return fun(templatePath: string): nil
 local newNote = function(options)
 	return function()
 		local templates = ioUtils.list_files(options.sub_dirs.templates)
-		local template =
-			vim.fn.input(constants.chooseTemplatePrompt .. "\n- " .. utils.joinString(templates, "\n- ") .. "\n")
+		local templateIndex = vim.fn.input(constants.chooseTemplatePrompt .. "\n" .. formatTemplates(templates) .. "\n")
 
-		if template == nil then
-			error("Note creation aborted.")
+		if templateIndex == nil or tonumber(templateIndex) > #templates then
+			error("Note creation aborted: no template selected.")
 			return
 		end
 
-		local templatePath = options.sub_dirs.templates .. "/" .. template
+		local templatePath = options.sub_dirs.templates .. "/" .. templates[tonumber(templateIndex)]
 		if not ioUtils.file_exists(templatePath) then
 			error("Template file does not exist.")
 			return
 		end
 
 		local title = vim.fn.input(constants.newNotePrompt)
-
 		if title == nil then
 			error("Note creation aborted.")
 			return

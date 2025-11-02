@@ -9,20 +9,6 @@ utils.getTemplates = function(templatePath)
 	return ioUtils.list_files(templatePath)
 end
 
---- @param t string[]
---- @param separator string
---- @return string
-utils.joinString = function(t, separator)
-	local s = ""
-	for i, v in ipairs(t) do
-		if i ~= 1 then
-			s = s .. separator
-		end
-		s = s .. v
-	end
-	return s
-end
-
 --- @param format string | nil
 --- @return string
 utils.getDate = function(format)
