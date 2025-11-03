@@ -5,7 +5,7 @@
 local constants = {
 	newNotePrompt = "What should we call the note?",
 	newTemplatePrompt = "What should we call the template?",
-	chooseTemplatePrompt = "Choose from your template:",
+	chooseTemplatePrompt = "Choose from your templates:",
 	telescopeSearchDirs = function(directory)
 		return 'Telescope find_files search_dirs={"' .. directory .. '"}'
 	end,
