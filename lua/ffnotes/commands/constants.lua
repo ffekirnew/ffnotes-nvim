@@ -7,7 +7,7 @@ local constants = {
 	newTemplatePrompt = "What should we call the template?",
 	chooseTemplatePrompt = "Choose from your templates:",
 	telescopeSearchDirs = function(directory)
-		return 'Telescope find_files search_dirs={"' .. directory .. '"}'
+		return 'Telescope live_grep search_dirs={"' .. directory .. '"}'
 	end,
 }
 
